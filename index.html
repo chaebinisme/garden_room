@@ -1,40 +1,367 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="ko">
 <head>
-	<title>krpano - DSC00603 Panorama</title>
-	<meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0, viewport-fit=cover" />
-	<meta name="apple-mobile-web-app-capable" content="yes" />
-	<meta name="apple-mobile-web-app-status-bar-style" content="black" />
-	<meta http-equiv="Content-Type" content="text/html;charset=utf-8" />
-	<meta http-equiv="x-ua-compatible" content="IE=edge" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GA4 실습용 쇼핑몰 - TrendLook</title>
+    
+    <!-- ⚠️ 실습 가이드: 여기에 본인의 GA4 추적 태그(gtag.js)를 붙여넣으세요! -->
+    <!-- 
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX');
+    </script>
+    -->
 
-	
-    <meta property="og:title" content="krpano 타이틀 by Jewon Seo"/>
-    <meta property="og:site_name" content="신우멀티미디어"/>
-    <meta property="og:description" content="krpano 보조 타이틀"/>
-    <meta property="og:image" content="https://panovr.synology.me/vr/...-si/...-dong/20210419-1/panos/001.tiles/thumb.jpg"/>
-    <meta property="og:image:type" content="image/jpeg">
-    <meta property="og:image:width" content="800">
-    <meta property="og:image:height" content="450">
-
-
-	<style>
-		@-ms-viewport { width:device-width; }
-		@media only screen and (min-device-width:800px) { html { overflow:hidden; } }
-		html { height:100%; }
-		body { height:100%; overflow:hidden; margin:0; padding:0; font-family:Arial, Helvetica, sans-serif; font-size:16px; color:#FFFFFF; background-color:#000000; }
-	</style>
+    <style>
+        :root {
+            --primary: #333;
+            --accent: #ff5a60;
+            --bg-light: #f9f9f9;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            color: var(--primary);
+            background-color: #fff;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 5%;
+            border-bottom: 1px solid #eee;
+            position: sticky;
+            top: 0;
+            background: #fff;
+            z-index: 100;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            letter-spacing: 1px;
+            cursor: pointer;
+        }
+        nav a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #555;
+            font-weight: 500;
+        }
+        .nav-buttons button {
+            background: none;
+            border: 1px solid #ccc;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+        .nav-buttons .btn-signup {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+        }
+        .hero {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            padding: 80px 5%;
+            text-align: center;
+        }
+        .hero h1 {
+            font-size: 42px;
+            margin-bottom: 10px;
+        }
+        .hero p {
+            font-size: 18px;
+            color: #666;
+            margin-bottom: 25px;
+        }
+        .hero button {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            border-radius: 25px;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+        .hero button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(255, 90, 96, 0.4);
+        }
+        .section-title {
+            text-align: center;
+            margin: 50px 0 30px;
+            font-size: 28px;
+        }
+        .product-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            padding: 0 5%;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        .product-card {
+            border: 1px solid #eee;
+            border-radius: 8px;
+            overflow: hidden;
+            transition: 0.3s;
+            text-align: center;
+            padding-bottom: 20px;
+            background: #fff;
+        }
+        .product-card:hover {
+            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        }
+        .product-img {
+            width: 100%;
+            height: 280px;
+            background-color: #eee;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #aaa;
+            font-weight: bold;
+            background-size: cover;
+            background-position: center;
+        }
+        .product-info {
+            padding: 15px;
+        }
+        .product-brand {
+            font-size: 12px;
+            color: #999;
+            text-transform: uppercase;
+        }
+        .product-name {
+            font-size: 16px;
+            font-weight: bold;
+            margin: 5px 0;
+        }
+        .product-price {
+            color: var(--accent);
+            font-weight: bold;
+            margin-bottom: 15px;
+        }
+        .btn-cart {
+            background-color: transparent;
+            border: 1px solid var(--primary);
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+        .btn-cart:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        .banner-area {
+            background-color: var(--bg-light);
+            padding: 60px 5%;
+            margin: 60px 0;
+            text-align: center;
+        }
+        .banner-link {
+            color: #0066cc;
+            text-decoration: none;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 15px;
+        }
+        footer {
+            background-color: #111;
+            color: #ccc;
+            padding: 40px 5%;
+            text-align: center;
+            font-size: 14px;
+        }
+        .footer-links a {
+            color: #888;
+            margin: 0 10px;
+            text-decoration: none;
+        }
+    </style>
 </head>
 <body>
 
-<script src="tour.js"></script>
+    <!-- 헤더 영역 -->
+    <header>
+        <div class="logo" onclick="alert('홈 로고 클릭 이벤트 측정 가능!')">TrendLook</div>
+        <nav>
+            <a href="#new" onclick="trackNav('신상품')">New Arrivals</a>
+            <a href="#best" onclick="trackNav('베스트')">Best Sellers</a>
+            <a href="#event" onclick="trackNav('이벤트')">Special Event</a>
+        </nav>
+        <div class="nav-buttons">
+            <button onclick="openLoginModal()" class="btn-login">로그인</button>
+            <button onclick="triggerSignUp()" class="btn-signup">회원가입 혜택받기</button>
+        </div>
+    </header>
 
-<div id="pano" style="width:100%;height:100%;">
-	<noscript><table style="width:100%;height:100%;"><tr style="vertical-align:middle;"><td><div style="text-align:center;">ERROR:<br/><br/>Javascript not activated<br/><br/></div></td></tr></table></noscript>
-	<script>
-		embedpano({swf:"tour.swf", xml:"tour.xml", target:"pano", html5:"auto", mobilescale:1.0, passQueryParameters:true});
-	</script>
-</div>
+    <!-- 히어로 배너 (프로모션 노출/클릭 측정용) -->
+    <section class="hero" id="event">
+        <h1>Summer Premium Sale</h1>
+        <p>지금 가입하면 올여름 신상품 전품목 20% 추가 할인 쿠폰 증정!</p>
+        <button id="promo-btn" onclick="clickPromotion('summer_sale_2026', 'Summer Premium Banner')">할인 쿠폰 받기</button>
+    </section>
 
+    <!-- 상품 그리드 영역 (전자상거래 리스트/선택 측정용) -->
+    <main>
+        <h2 class="section-title" id="new">MD's Choice - 이달의 추천 아이템</h2>
+        
+        <div class="product-grid">
+            <!-- 상품 1 -->
+            <div class="product-card" data-id="prod_001" data-name="린넨 베이직 셔츠" data-price="49000" data-category="상의">
+                <div class="product-img" style="background-color: #eae6df; height: 280px; display: flex; align-items: center; justify-content: center;">👔 Linen Shirt</div>
+                <div class="product-info">
+                    <div class="product-brand">TrendLook Basic</div>
+                    <div class="product-name" onclick="clickProduct('prod_001', '린넨 베이직 셔츠', 49000, '상의')">린넨 베이직 셔츠</div>
+                    <div class="product-price">49,000원</div>
+                    <button class="btn-cart" onclick="addToCart('prod_001', '린넨 베이직 셔츠', 49000, '상의')">장바구니 담기</button>
+                </div>
+            </div>
+
+            <!-- 상품 2 -->
+            <div class="product-card" data-id="prod_002" data-name="원턱 세미와이드 슬랙스" data-price="59000" data-category="하의">
+                <div class="product-img" style="background-color: #d9e1e8; height: 280px; display: flex; align-items: center; justify-content: center;">👖 Wide Slacks</div>
+                <div class="product-info">
+                    <div class="product-brand">TrendLook Lab</div>
+                    <div class="product-name" onclick="clickProduct('prod_002', '원턱 세미와이드 슬랙스', 59000, '하의')">원턱 세미와이드 슬랙스</div>
+                    <div class="product-price">59,000원</div>
+                    <button class="btn-cart" onclick="addToCart('prod_002', '원턱 세미와이드 슬랙스', 59000, '하의')">장바구니 담기</button>
+                </div>
+            </div>
+
+            <!-- 상품 3 -->
+            <div class="product-card" data-id="prod_003" data-name="오버핏 크루넥 니트" data-price="68000" data-category="아우터">
+                <div class="product-img" style="background-color: #e5dec9; height: 280px; display: flex; align-items: center; justify-content: center;">🧶 Crewneck Knit</div>
+                <div class="product-info">
+                    <div class="product-brand">TrendLook Premium</div>
+                    <div class="product-name" onclick="clickProduct('prod_003', '오버핏 크루넥 니트', 68000, '아우터')">오버핏 크루넥 니트</div>
+                    <div class="product-price">68,000원</div>
+                    <button class="btn-cart" onclick="addToCart('prod_003', '오버핏 크루넥 니트', 68000, '아우터')">장바구니 담기</button>
+                </div>
+            </div>
+        </div>
+
+        <!-- 룩북 배너 영역 (외부 링크 클릭 / 파일 다운로드 이벤트 실습용) -->
+        <section class="banner-area">
+            <h2>2026 Summer Lookbook 스타일 가이드</h2>
+            <p>트렌디한 여름 스타일링 조합법을 PDF로 먼저 만나보세요.</p>
+            <a href="lookbook_2026_summer.pdf" download class="banner-link" onclick="trackDownload('lookbook_2026_summer.pdf')">
+                📖 2026 룩북 카탈로그 다운로드 (.PDF)
+            </a>
+        </section>
+    </main>
+
+    <!-- 푸터 영역 -->
+    <footer>
+        <div class="footer-links">
+            <a href="https://github.com/your-profile" target="_blank" onclick="trackOutbound('Github')">회사소개</a> | 
+            <a href="https://instagram.com/your-profile" target="_blank" onclick="trackOutbound('Instagram')">인스타그램</a> | 
+            <a href="#privacy">개인정보처리방침</a>
+        </div>
+        <p style="margin-top: 20px; color: #666;">© 2026 TrendLook Co. GA4 Education Purpose.</p>
+    </footer>
+
+    <!-- 자바스크립트 테스트 영역 (GA4 태그 작동 확인 및 콘솔 로그 출력용) -->
+    <script>
+        // 1. 회원 가입 성공 이벤트 (Recommended Event: sign_up)
+        function triggerSignUp() {
+            alert('회원가입이 완료되었습니다! (GA4 sign_up 이벤트 전송)');
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'sign_up', {
+                    method: 'WebForm'
+                });
+            } else {
+                console.log('GA4 미설치 상태: sign_up 이벤트 발생');
+            }
+        }
+
+        // 2. 프로모션 클릭 이벤트 (Recommended Event: select_promotion)
+        function clickPromotion(promo_id, promo_name) {
+            alert(`프로모션 [${promo_name}] 클릭! (GA4 select_promotion 전송)`);
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'select_promotion', {
+                    promotion_id: promo_id,
+                    promotion_name: promo_name,
+                    creative_name: 'summer_coupon_button',
+                    location_id: 'hero_section'
+                });
+            } else {
+                console.log('GA4 미설치 상태: select_promotion 이벤트 발생');
+            }
+        }
+
+        // 3. 상품 클릭 이벤트 (Recommended Event: select_item)
+        function clickProduct(id, name, price, category) {
+            alert(`상세 페이지 이동 시뮬레이션: ${name} (GA4 view_item 전송)`);
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'view_item', {
+                    currency: 'KRW',
+                    value: price,
+                    items: [{
+                        item_id: id,
+                        item_name: name,
+                        price: price,
+                        item_category: category,
+                        quantity: 1
+                    }]
+                });
+            } else {
+                console.log('GA4 미설치 상태: view_item 이벤트 발생');
+            }
+        }
+
+        // 4. 장바구니 담기 이벤트 (Recommended Event: add_to_cart)
+        function addToCart(id, name, price, category) {
+            alert(`장바구니에 담겼습니다: ${name} (GA4 add_to_cart 전송)`);
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'add_to_cart', {
+                    currency: 'KRW',
+                    value: price,
+                    items: [{
+                        item_id: id,
+                        item_name: name,
+                        price: price,
+                        item_category: category,
+                        quantity: 1
+                    }]
+                });
+            } else {
+                console.log('GA4 미설치 상태: add_to_cart 이벤트 발생');
+            }
+        }
+
+        // 5. 다운로드 및 아웃바운드 링크 (Custom click events)
+        function trackDownload(fileName) {
+            console.log(`파일 다운로드 탐지: ${fileName}`);
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'file_download', {
+                    file_name: fileName,
+                    file_extension: 'pdf'
+                });
+            }
+        }
+
+        function trackOutbound(platform) {
+            console.log(`외부 링크 이동: ${platform}`);
+            if (typeof gtag !== 'undefined') {
+                gtag('event', 'click_outbound', {
+                    destination_platform: platform
+                });
+            }
+        }
+
+        function trackNav(menuName) {
+            console.log(`메뉴 네비게이션 클릭: ${menuName}`);
+        }
+    </script>
 </body>
 </html>
